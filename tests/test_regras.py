@@ -66,6 +66,15 @@ def test_carimbo_ausente_e_unidade_errada(tmp_path):
     assert {"CAR01", "UNI01", "CAM02"} <= codigos
 
 
+def test_marcas_de_revisao_anterior_sao_ignoradas(tmp_path):
+    doc = ezdxf.new()
+    doc.layers.add("REVISAO_IA")
+    doc.modelspace().add_text("[ENT01] linha na camada 0", height=2.5, dxfattribs={"layer": "REVISAO_IA"})
+    caminho = tmp_path / "c.dxf"
+    doc.saveas(caminho)
+    assert extrair_dxf(caminho).entidades == []
+
+
 def test_cli_sem_ia_gera_relatorio(tmp_path):
     caminho = _criar_dxf(tmp_path / "planta.dxf")
     padroes = Path(__file__).parent.parent / "padroes.yaml"

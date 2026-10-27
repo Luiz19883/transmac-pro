@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass, field
 
 COR_POR_CAMADA = 256  # ByLayer
 COR_POR_BLOCO = 0  # ByBlock
+CAMADA_REVISAO = "REVISAO_IA"  # marcas da revisão; ignoradas na próxima leitura
 
 
 @dataclass

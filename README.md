@@ -19,7 +19,29 @@ pip install -r requirements.txt
 set ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-## Uso
+## Dentro do AutoCAD
+
+1. Abra `autocad\revisar_ia.lsp` e ajuste `*ria-pasta*` (a pasta deste projeto)
+   e `*ria-python*`.
+2. No AutoCAD, rode `APPLOAD`, carregue o arquivo e, para não precisar repetir,
+   adicione-o em **Conteúdo** (Startup Suite).
+3. Use os comandos:
+
+| Comando | O que faz |
+|---|---|
+| `REVISARIA` | Regras + IA. Marca os problemas no desenho e abre o relatório |
+| `REVISARREGRAS` | Só as regras, sem custo de IA |
+| `LIMPARREVISAO` | Apaga as marcas da camada `REVISAO_IA` |
+| `IRHANDLE` | Pede um handle do relatório e dá zoom na entidade |
+
+A revisão roda numa janela de console ao lado e lê o desenho ativo, então não é
+preciso salvar antes. Cada nova revisão substitui as marcas da anterior.
+
+A chave da IA precisa estar nas variáveis de ambiente do Windows
+(`setx ANTHROPIC_API_KEY sk-ant-...`). Feche e abra o AutoCAD depois do `setx`,
+porque o AutoCAD só lê as variáveis quando é iniciado.
+
+## Pela linha de comando
 
 ```bat
 :: revisa o desenho que está aberto no AutoCAD

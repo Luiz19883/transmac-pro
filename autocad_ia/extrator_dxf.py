@@ -5,7 +5,7 @@ from pathlib import Path
 
 import ezdxf
 
-from .modelo import Camada, Desenho, Entidade
+from .modelo import CAMADA_REVISAO, Camada, Desenho, Entidade
 
 _TIPOS_COTA = {"DIMENSION", "ARC_DIMENSION", "LARGE_RADIAL_DIMENSION"}
 
@@ -62,6 +62,7 @@ def extrair_dxf(caminho: str | Path) -> Desenho:
         _converter(ent, layout.name)
         for layout in doc.layouts
         for ent in layout
+        if ent.dxf.get("layer", "0") != CAMADA_REVISAO
     ]
     return Desenho(
         arquivo=str(caminho),

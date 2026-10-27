@@ -10,6 +10,7 @@ Exemplos:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -18,16 +19,20 @@ import yaml
 from .regras import verificar
 from .relatorio import gerar_markdown
 
+# padroes.yaml ao lado do pacote, para funcionar quando chamado de dentro do AutoCAD
+PADROES_PADRAO = Path(__file__).resolve().parent.parent / "padroes.yaml"
+
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="autocad_ia", description="Revisa desenhos AutoCAD com regras + IA.")
     origem = parser.add_mutually_exclusive_group()
     origem.add_argument("--dwg", help="abre este DWG no AutoCAD e revisa (Windows)")
     origem.add_argument("--dxf", help="revisa um arquivo DXF sem precisar do AutoCAD")
-    parser.add_argument("--padroes", default="padroes.yaml", help="arquivo de padrões da empresa")
+    parser.add_argument("--padroes", default=str(PADROES_PADRAO), help="arquivo de padrões da empresa")
     parser.add_argument("--saida", help="arquivo do relatório (padrão: <desenho>_revisao.md)")
     parser.add_argument("--sem-ia", action="store_true", help="não chama a IA, só as regras")
     parser.add_argument("--marcar", action="store_true", help="marca os problemas no desenho (camada REVISAO_IA)")
+    parser.add_argument("--abrir", action="store_true", help="abre o relatório ao terminar (Windows)")
     args = parser.parse_args(argv)
 
     padroes = yaml.safe_load(Path(args.padroes).read_text(encoding="utf-8")) or {}
@@ -63,6 +68,9 @@ def main(argv: list[str] | None = None) -> int:
         else:
             from .extrator_autocad import marcar_problemas
             print(f"Marcados {marcar_problemas(doc, problemas)} problema(s) na camada REVISAO_IA.")
+
+    if args.abrir and hasattr(os, "startfile"):
+        os.startfile(saida)
 
     return 1 if any(p.gravidade == "erro" for p in problemas) else 0
 
