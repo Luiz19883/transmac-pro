@@ -1,0 +1,35 @@
+# Padrões de desenho da empresa. Ajuste à sua realidade.
+
+camadas:
+  # Ex.: ARQ-PAREDE, EST-PILAR, ELE-TOMADA
+  padrao_nome: '^(ARQ|EST|ELE|HID|COT|TXT|CAR)-[A-Z0-9_]+$'
+  excecoes: ['0', 'Defpoints', 'REVISAO_IA']
+  obrigatorias: ['COT-COTAS', 'TXT-TEXTOS', 'CAR-CARIMBO']
+  avisar_vazias: true
+
+entidades:
+  proibir_na_camada_0: true        # blocos podem ficar na 0
+  cor_deve_ser_porcamada: true
+
+textos:
+  alturas_permitidas: [1.8, 2.5, 3.5, 5.0, 7.0]
+  tolerancia_altura: 0.01
+  estilos_permitidos: ['ROMANS', 'ARIAL']
+
+cotas:
+  estilos_permitidos: ['COTA-1-50', 'COTA-1-100']
+
+carimbo:
+  bloco: 'CARIMBO'
+  atributos_obrigatorios: [PROJETO, DESENHO, ESCALA, DATA, AUTOR, FOLHA, REVISAO]
+
+# INSUNITS: 4 = mm, 5 = cm, 6 = m
+unidades: 5
+
+ia:
+  instrucoes: |
+    - Desenhos de arquitetura seguem a NBR 6492 e a NBR 16752.
+    - Textos em português do Brasil, sem abreviações fora da lista: PAV., CX., TUB., EXIST.
+    - A escala do carimbo deve corresponder ao estilo de cota usado (COTA-1-50 => 1:50).
+    - A data do carimbo deve estar no formato DD/MM/AAAA.
+    - Todo ambiente precisa de nome e área (ex.: "SALA  12,50 m²").

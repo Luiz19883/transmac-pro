@@ -1,0 +1,7 @@
+anthropic>=2.3.0
+pydantic>=2
+pyyaml>=6
+ezdxf>=1.4
+# Somente no Windows, para falar com o AutoCAD aberto:
+pyautocad>=0.2.0; sys_platform == "win32"
+pywin32>=306; sys_platform == "win32"
